@@ -6,7 +6,6 @@ import asyncio
 from quart import Quart
 from flask import Flask
 
-
 app = Quart(__name__)
 
 @asyncio.coroutine

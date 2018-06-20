@@ -8,7 +8,7 @@ MAX_WORKERS = 4
 SHOWS = ['deus-salve-o-rei', 'malhacao', 'o-outro-lado-do-paraiso', 'orgulho-e-paixao']
 
 def get_show(show):
-    resp = requests.get('http://localhost:5000/{0}'.format(show))
+    resp = requests.get('http://127.0.0.1:5000/{0}'.format(show))
     print(show)
     print(resp.json()['data-hoje'])
     print("=========================")
@@ -19,6 +19,15 @@ def get_show(show):
 
 def get_shows():
     # workers = 2
+    # Estou usando map, mas poderia fazer um for fazendo com que o executor
+    # use o .submit(get_show, show) e depois fazer um outro for para percorrer
+    # as futures appendadas no for anterior e percorrer as dones através do
+    # futures.as_completed([array appendado]) e colher seu resultado pelo
+    # indice.result()
+
+    # o que o executor.map faz: chama a função de forma concorrente a partir de
+    # várias threads . Ele devolve
+
     workers = min(MAX_WORKERS, len(SHOWS))
     with futures.ThreadPoolExecutor(workers) as executor:
         res = executor.map(get_show, sorted(SHOWS))
